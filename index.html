@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="style.css"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+    <title>Cat Collection</title>
+</head>
+<body >
+    <p>Cat Collection</p>
+    <div class="container">
+    <img src="img/cats.png" alt="Ilustração fofa de 2 gatos" srcset="">
+    <div class="container-lista">
+        <h2>Seus Gatinhos</h2>
+        <ul id="gatos" ></ul>
+        <div class="registra-cats">
+            <h4>Adicione um novo gatinho a sua coleção</h4>
+            <input type="text" name="nome" id="nome" placeholder="Escolha um nome" >
+            <input type="text" name="raca" id="raca" placeholder="Raça">
+            <button type="button" onclick="adicionarGato()">Adicionar</button>
+        </div>
+    </div>
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+//toda vez que eu clicar no botao adicionar, vou chamar essa funcao
+    function adicionarGato(){
+        var nomeInput = document.getElementById("nome")
+        var racaInput = document.getElementById("raca")
+
+        //esse vai ser o json que a gente vai enviar pro backend, pra nossa api
+        var gato = {
+            nome: nomeInput.value,
+            raca: racaInput.value
+        }
+
+        //enviando o json pra api, a rota que a gente usa pra criar um gato é a /cat do tipo post(so ver no index.js) e como segundo parametro o nome do json que a gente vai passar
+        axios.post("http://localhost:4567/cat", gato).then(resposta => {
+
+            if(resposta.status == 200){
+                alert("Gatinho cadastrado!")
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
+    //linka essa funcao ao evento de click criado abaixo no delete
+    function deleteGato(itemDaLista){
+        var id = itemDaLista.getAttribute("data-id")
+        axios.delete("http://localhost:4567/cat/" + id).then(resposta => {//a rota pra deletar + o id que voce ta puxando na variavel acima
+            alert("Gatinho apagado")
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    //operacao de leitura, para que o front end consiga ler todos os gatinhos cadastrados na nossa api
+
+    axios.get("http://localhost:4567/cats").then(resposta => {//get pq a sua rota na api que tem todos os gatinhos é um metodo get
+        var gatos = resposta.data //data é aquilo que aparece no console da web com os dados da sua pi
+        var retorno = gatos //armazenei o retorno, p/ conseguir manipular o array de gatos
+        var list = document.getElementById("gatos");
+        
+       
+        retorno.gatos.forEach((gato) => {
+            var item = document.createElement("li")
+
+            //liga os dados, tipo id, nome, e raca do banco de dados ao html
+            item.setAttribute("data-id", gato.id)
+            item.setAttribute("data-nome", gato.nome)
+            item.setAttribute("data-raca", gato.raca)
+
+            item.innerHTML = (`Apelido: ${gato.nome} 〰 Raça: ${gato.raca}`)
+            
+            //pra cada item da minha lista(lembrando que estamos dentro de um for)
+            //eu estou criando um botao, definindo o conteudo dele
+            var deleteBtn = document.createElement("button")//cria botao
+            deleteBtn.innerHTML = "Deletar" //adiciona o que sera escritp no botao
+            deleteBtn.addEventListener("click", function(){
+                deleteGato(item)
+            })
+
+            item.appendChild(deleteBtn)//coloca o botao dentro de cada elemento da lista("li")
+
+
+            list.appendChild(item)
+        });
+
+    }).catch(error => {//se der certo(then) ela retorna os dados da requisicao, se nao(catch)
+        console.log(error)
+    }) 
+
+</script>
+<script src="https://kit.fontawesome.com/1d7fa21abd.js" crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,75 @@
+body{
+    font-family: 'Didact Gothic', sans-serif;
+    background-color: #bbd8d8; /*;*/
+}
+
+p{
+    color: #004c4c;
+    margin-left: 25px;
+    font-family: 'Satisfy', cursive;
+    font-size: 22px;
+    text-decoration: underline overline;
+}
+.container{
+    margin-top: 200px;
+    display: flex;
+    justify-content:flex-start;
+    align-items:flex-start;
+}
+
+img{
+    margin-left: 100px;
+    width: 50%;
+    height: 400px;
+    box-shadow: 5px 5px #539494;
+
+}
+
+h2{
+    color: black;
+    margin-left: 40px;
+}
+
+ul{
+    list-style: none;
+}
+
+li{
+    margin-bottom: 7px;
+}
+
+
+button{
+    margin-left: 10px;
+    background-color:#539494;
+    border: none;
+    border-radius: 15px;
+    padding: 7px 15px;
+    color: #ffffff;
+}
+
+.registra-cats{
+    display: flex;
+    flex-direction: column;
+    align-items:stretch;
+
+}
+
+h4, input{
+    margin-left: 40px;
+}
+
+input{
+    font-family: 'Didact Gothic', sans-serif;
+    margin-bottom: 10px;
+    width: 295px;
+    border: 1px solid #539494;
+    border-radius: 15px;
+    padding: 7px;
+}
+
+.registra-cats button{
+    width: 310px;
+    margin-left: 40px;
+    margin-top: 3px;
+}
